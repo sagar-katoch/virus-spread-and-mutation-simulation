@@ -2,7 +2,7 @@
 
 ## 🧭 Introduction
 This project is a Python-based simulation that models the spread of a virus through a population and how the virus may mutate over time. It is designed to help understand viral dynamics, visualize epidemic curves, and analyze how different parameters affect the course of an outbreak.
-
+![alt text](image.png)
 The main aim is to:
 - Demonstrate the interaction between virus transmission and mutation.
 - Observe how an outbreak evolves over time.
@@ -11,7 +11,7 @@ The main aim is to:
 It’s an educational tool useful for students, researchers, or hobbyists curious about how infections spread and evolve.
 
 ---
-
+![alt text](image-2.png)
 ## 🔧 How It Works
 
 ### 1. **Initialization**
