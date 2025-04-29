@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virus Spread Simulation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Fullscreen Video Background */
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.25; /* Adjust for visibility */
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- 🔥 Background Video -->
+    <video autoplay muted loop id="bg-video">
+        <source src="{{ url_for('static', filename='background.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="container">
+        <header>
+            <h1 class="glow-text">Virus Spread Simulation</h1>
+            <p class="subtitle">Interactive model of viral transmission and mutation</p>
+        </header>
+
+        <main>
+            <div class="simulation-controls">
+                <div class="control-group">
+                    <h2>Simulation Parameters</h2>
+                    
+                    <div class="slider-container">
+                        <label for="population-size">Population Size: <span id="population-size-value">1000</span></label>
+                        <div class="slider-wrapper">
+                            <input type="range" id="population-size" min="100" max="2000" value="1000" class="slider">
+                            <div class="slider-track"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label for="simulation-duration">Simulation Duration (days): <span id="simulation-duration-value">100</span></label>
+                        <div class="slider-wrapper">
+                            <input type="range" id="simulation-duration" min="10" max="365" value="100" class="slider">
+                            <div class="slider-track"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label for="transmission-rate">Transmission Rate: <span id="transmission-rate-value">0.30</span></label>
+                        <div class="slider-wrapper">
+                            <input type="range" id="transmission-rate" min="0" max="1" step="0.01" value="0.3" class="slider">
+                            <div class="slider-track"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label for="mutation-rate">Mutation Rate: <span id="mutation-rate-value">0.10</span></label>
+                        <div class="slider-wrapper">
+                            <input type="range" id="mutation-rate" min="0" max="1" step="0.01" value="0.1" class="slider">
+                            <div class="slider-track"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-divider">Advanced Parameters</div>
+                    
+                    <div class="slider-container">
+                        <label for="mean-recovery-time">Mean Recovery Time (days): <span id="mean-recovery-time-value">14</span></label>
+                        <div class="slider-wrapper">
+                            <input type="range" id="mean-recovery-time" min="1" max="30" value="14" class="slider">
+                            <div class="slider-track"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label for="recovery-std-dev">Recovery Time Variation: <span id="recovery-std-dev-value">3</span></label>
+                        <div class="slider-wrapper">
+                            <input type="range" id="recovery-std-dev" min="0" max="10" value="3" class="slider">
+                            <div class="slider-track"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label for="death-rate">Death Rate: <span id="death-rate-value">0.02</span></label>
+                        <div class="slider-wrapper">
+                            <input type="range" id="death-rate" min="0" max="2" step="0.005" value="0.02" class="slider">
+                            <div class="slider-track"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label for="immunity-decay">
+                            <span>Immunity Decay (days):</span> 
+                            <span id="immunity-decay-value">∞</span>
+                            <div class="tooltip" data-tooltip="Set how long immunity lasts after recovery. 'Off' means permanent immunity.">ⓘ</div>
+                        </label>
+                        <div class="checkbox-container">
+                            <label class="toggle">
+                                <input type="checkbox" id="immunity-decay-toggle">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">Enable Immunity Decay</span>
+                            </label>
+                        </div>
+                        <div class="slider-wrapper" id="immunity-decay-slider-container" style="display: none;">
+                            <input type="range" id="immunity-decay" min="7" max="180" value="60" class="slider" disabled>
+                            <div class="slider-track"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label for="vaccination-rate">Vaccination Rate: <span id="vaccination-rate-value">0.00</span></label>
+                        <div class="slider-wrapper">
+                            <input type="range" id="vaccination-rate" min="0" max="1" step="0.01" value="0" class="slider">
+                            <div class="slider-track"></div>
+                        </div>
+                    </div>
+                    
+                    <button id="run-simulation" class="run-button">Run Simulation</button>
+                </div>
+                
+                <div class="simulation-results">
+                    <div class="results-header">
+                        <h2>Simulation Results</h2>
+                        <div id="loading-indicator" class="loading-indicator hidden">
+                            <div class="loader"></div>
+                            <span>Running simulation...</span>
+                        </div>
+                    </div>
+                    
+                    <div id="stats-container" class="stats-container hidden">
+                        <div class="stat-card">
+                            <h3>Total Unique Mutations</h3>
+                            <div id="total-mutations" class="stat-value">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total Deaths</h3>
+                            <div id="total-deaths" class="stat-value death-color">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Current Status</h3>
+                            <div id="population-status" class="population-status"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="infection-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="mutation-strains" class="mutation-strains hidden">
+                <h2>Top Mutation Strains</h2>
+                <div class="strain-list" id="strain-list">
+                    <!-- Strain data will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Virus Spread & Mutation Simulation Model</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

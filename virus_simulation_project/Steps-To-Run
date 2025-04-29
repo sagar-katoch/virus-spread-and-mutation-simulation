@@ -1,0 +1,29 @@
+Make sure your folder has the following files and folders:
+
+virus_simulation_project/
+│
+├── app.py                ← Python file that runs your Flask web server
+├── simulation.py         ← Python file with the simulation logic
+├── templates/
+│   └── index.html        ← Your HTML file (Flask puts HTML here)
+├── static/
+│   ├── styles.css        ← Your CSS (design)
+│   └── script.js         ← Your JavaScript (behavior)
+
+Step 1: Open New Terminal In VS code. In the terminal, make sure you're in your project folder.
+
+python -m venv venv
+
+
+Step 2: Activate virtual environment
+
+venv\Scripts\activate         #For Windows
+source venv/bin/activate      #For Mac
+
+Step 3: Download modules
+
+pip install -r requirements.txt
+
+Step 4: 
+python app.py
+
