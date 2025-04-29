@@ -1,52 +1,105 @@
- 
-🧬 Virus Spread and Mutation Simulation
-This project simulates how a virus spreads and mutates through a population over time. It models infection dynamics and tracks key metrics like susceptible, infected, and recovered individuals, helping visualize how mutations influence viral outbreaks.
+# 🧬 Virus Spread and Mutation Simulation
 
-🔍 Features
-📈 Simulation of virus spread across a population
+## 🧭 Introduction
+This project is a Python-based simulation that models the spread of a virus through a population and how the virus may mutate over time. It is designed to help understand viral dynamics, visualize epidemic curves, and analyze how different parameters affect the course of an outbreak.
 
-🧪 Dynamic mutation modeling
+The main aim is to:
+- Demonstrate the interaction between virus transmission and mutation.
+- Observe how an outbreak evolves over time.
+- Allow modification of parameters to simulate different scenarios.
 
-👥 Population tracking (Susceptible, Infected, Recovered)
+It’s an educational tool useful for students, researchers, or hobbyists curious about how infections spread and evolve.
 
-🛠 Adjustable parameters: infection rate, mutation rate, population size
+---
 
-📊 Simple visualization of simulation results
+## 🔧 How It Works
 
-🚀 Getting Started
-1. Clone the repository:
-bash
-Copy
-Edit
+### 1. **Initialization**
+- The simulation starts by initializing a population of individuals.
+- Each individual is assigned a status: Susceptible (S), Infected (I), or Recovered (R).
+- A few individuals are initially infected to begin the simulation.
+
+### 2. **Simulation Loop**
+The simulation runs in time steps (iterations). In each step:
+- Infected individuals attempt to infect susceptible ones based on a defined **infection rate**.
+- With each transmission, there is a chance that the virus **mutates**, governed by the **mutation rate**.
+- Infected individuals recover after a certain time and are marked as Recovered.
+
+### 3. **Mutation Modeling**
+- Each mutation may change the virus slightly (for simplicity, this might be represented by an identifier or numerical trait).
+- The simulation can track different strains over time.
+
+### 4. **Output and Visualization**
+- At the end of the simulation, results are either printed or plotted.
+- Key metrics: number of susceptible, infected, recovered individuals, and number of unique virus strains.
+
+---
+
+## 🔍 Features
+
+- 📈 **Simulation of virus spread**
+- 🧪 **Mutation tracking**
+- 👥 **SIR population model** (Susceptible, Infected, Recovered)
+- 🛠 **Configurable parameters**
+- 📊 **Optional visualization of results**
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repository:
+```bash
 git clone https://github.com/sagar-katoch/virus-spread-and-mutation-simulation.git
 cd virus-spread-and-mutation-simulation
-2. Install dependencies:
-bash
-Copy
-Edit
+```
+
+### 2. Install dependencies:
+```bash
 pip install -r requirements.txt
-3. Run the simulation:
-bash
-Copy
-Edit
+```
+
+### 3. Run the simulation:
+```bash
 python simulate.py
-You can tweak parameters directly in simulate.py or config.py to explore different outcomes.
+```
 
-📁 Project Structure
-bash
-Copy
-Edit
+### 4. Customize Parameters:
+Edit `config.py` or `simulate.py` to change:
+- Infection rate
+- Mutation rate
+- Population size
+- Recovery time
+
+---
+
+## 📁 Project Structure
+```
+virus-spread-and-mutation-simulation/
 ├── simulate.py        # Main simulation logic
-├── config.py          # Configuration for simulation parameters
-├── README.md
-└── requirements.txt   # Python dependencies
-🧠 Use Cases
-Understanding viral dynamics and mutation behavior
+├── config.py          # Parameter configurations
+├── README.md          # Documentation
+└── requirements.txt   # Dependencies
+```
 
-Teaching basic epidemiological modeling
+---
 
-Running experiments on how parameter changes affect outcomes
+## 🧠 Use Cases
+- Teaching basic concepts in epidemiology and virus evolution
+- Modeling outbreak scenarios for research or education
+- Studying effects of virus mutations on epidemic outcomes
 
-📜 License
-This project is licensed under the MIT License. See LICENSE for more details.
+---
+
+## 📜 License
+This project is licensed under the **MIT License**. See [LICENSE](./LICENSE) for details.
+
+---
+
+## 🤝 Contributing
+Feel free to fork this project and propose improvements via pull requests. Contributions are welcome!
+
+---
+
+## 📬 Contact
+For any questions or suggestions, feel free to contact [katochsagar2@gmail.com](mailto:katochsagar2@gmail.com).
 
